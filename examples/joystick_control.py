@@ -125,7 +125,7 @@ class Service(object):
 
 
 if __name__ == "__main__":
-    robot = urx.Robot("192.168.1.100")
+    robot = urx.Robot("192.168.2.102")
     r = robot
 
 

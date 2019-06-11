@@ -1,5 +1,6 @@
-from urx import Robot
+from robot import Robot
 import time
+import numpy as np
 
 def connect(robot_ip="192.168.2.102"):
 	connected = False
@@ -36,16 +37,33 @@ def move_dz(robot, dz):
 
 robot = Robot("192.168.2.102")
 print 'Position:', robot.x, robot.y, robot.z
-# print 'Orientation:', robot.get_orientation()
+print 'Orientation:', robot.get_orientation()
+time.sleep(1)
 
-move_dx(robot, -0.1)
-move_dy(robot, 0.05)
-move_dz(robot, 0.05)
+robot.set_orientation([np.pi/2, 0, 0])
+time.sleep(2)
 
-# print robot.x  # returns current x
-# robot.rx  # returns 0 (could return x component of axis vector, but it is not very usefull
-# robot.rx -= 0.1  # rotate tool around X axis
+# move_dx(robot, -0.1)
+# move_dy(robot, 0.05)
+# move_dz(robot, -0.1)
 
+# try:
+# 	trans = robot.get_pose()  # get current transformation matrix (tool to base)
+# 	trans.pos.z -= 0.1
+# 	robot.set_pose(trans, acc=0.01, vel=0.03)  # apply the new pose
+# except:
+# 	pass
 
+# try:
+# 	robot.movel((0.0, 0, 0.8, 0, 0, 0), acc=0.01, vel=0.01, relative=False)  # move relative to current pose
+# 	time.sleep(5.0)
+# except:
+# 	pass
+
+# try:
+# 	speeds = [0,0,0.05, 0,0,0]
+# 	robot.speedj(velocities=speeds, acc=0.01, min_time=2)
+# except:
+# 	print 'no vel control'
 
 robot.close()
