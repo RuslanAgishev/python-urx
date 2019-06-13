@@ -1,4 +1,4 @@
-from robot import Robot
+from urx import Robot
 import time
 import numpy as np
 
@@ -36,12 +36,14 @@ def move_dz(robot, dz):
 	time.sleep(dt)
 
 robot = Robot("192.168.2.102")
-print 'Position:', robot.x, robot.y, robot.z
-print 'Orientation:', robot.get_orientation()
-time.sleep(1)
+# print 'Position:', robot.x, robot.y, robot.z
+# print 'Orientation:', robot.get_orientation()
 
-robot.set_orientation([np.pi/2, 0, 0])
-time.sleep(2)
+trans = robot.get_pose()
+print trans.pos
+
+# robot.set_orientation([np.pi/2, 0, 0])
+# time.sleep(5)
 
 # move_dx(robot, -0.1)
 # move_dy(robot, 0.05)
@@ -59,6 +61,13 @@ time.sleep(2)
 # 	time.sleep(5.0)
 # except:
 # 	pass
+
+# vx_rob = -0.05
+# vy_rob = 0
+# vz_rob = 0
+# robot.speedl((vx_rob , vy_rob , vz_rob , 0, 0, 0), acc=0.1, min_time=1);
+# time.sleep(1)
+
 
 # try:
 # 	speeds = [0,0,0.05, 0,0,0]

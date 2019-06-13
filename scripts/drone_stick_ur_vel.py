@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
+from numpy.linalg import norm
 import time
 from swarmlib import Mocap_object
 import rospy
@@ -17,7 +18,7 @@ yaw_koef       = 1.0
 put_limits       = 0
 limits           = np.array([ 1.7, 1.7, 2.5 ]) # limits desining safety flight area in the room
 limits_negative  = np.array([-1.7, -1.7, -0.1 ])
-rate = rospy.Rate(0.5)
+rate = rospy.Rate(1)
 
 # UR robot-arm
 class UR(Robot):
@@ -26,22 +27,6 @@ class UR(Robot):
         self.ip = ip
         self.ee_pose = np.zeros(3)
         self.ee_orient = np.zeros(3)
-
-    def move_dx(self, dx):
-        try:
-            self.x_t += dx  # move robot in tool z axis [m]
-        except:
-            pass
-    def move_dy(self, dy):
-        try:
-            self.y_t += dy  # move robot in tool z axis [m]
-        except:
-            pass
-    def move_dz(self, dz):
-        try:
-            self.z_t += dz  # move robot in tool z axis [m]
-        except:
-            pass
 
     def move_dp(self, dp):
         try:
@@ -121,14 +106,17 @@ if __name__ == "__main__":
         cmd_vel = vel_koef*(np.array([x_input, y_input, z_input]))
         yaw_input = yaw_koef * yaw_input
         time_now = time.time()
-        print 'Sending velocities:', cmd_vel
         time_prev = time_now
 
-        ur.move_dp(cmd_vel)
+        # ur.move_dp(cmd_vel)
+        # print norm(cmd_vel[:2])
+        # if norm(cmd_vel[:2]) > 0.01:
+        print 'Sending velocities:', cmd_vel
+        ur.speedl((cmd_vel[0] , cmd_vel[1] , 0 , 0, 0, 0), acc=0.3, min_time=2)
 
         # terminate controller if drone-joystick is landed
         Z = JOYSTICK_TAKEOFF_HEIGHT
-        if (Z - drone_joystick.pose[2]) > 0.15:
+        if (Z - drone_joystick.pose[2]) > 0.10:
             break
         rate.sleep()
     ur.close()
