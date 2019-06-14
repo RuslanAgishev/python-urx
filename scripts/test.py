@@ -39,10 +39,10 @@ robot = Robot("192.168.2.102")
 # print 'Position:', robot.x, robot.y, robot.z
 # print 'Orientation:', robot.get_orientation()
 
-trans = robot.get_pose()
-print trans.pos
+# trans = robot.get_pose()
+# print trans.pos
 
-# robot.set_orientation([np.pi/2, 0, 0])
+robot.set_orientation([0, 0, np.pi])
 # time.sleep(5)
 
 # move_dx(robot, -0.1)
